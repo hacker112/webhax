@@ -16,9 +16,19 @@
     B: 30.87,
   };
 
-  function playTone(note, octave, start, duration) {
+  const chiptune = (() => {
+    const real = Array.from({ length: 8192 }, (_, n) =>
+      n === 0 ? 0 : (4 / (n * Math.PI)) * Math.sin(Math.PI * n * 0.18),
+    );
+    const imag = real.map(() => 0);
+    return { real, imag };
+  })();
+
+  function playTone(note, octave, start, duration, oscilatorType = "sine") {
     const osc = context.createOscillator();
-    osc.type = "sawtooth";
+    osc.setPeriodicWave(
+      context.createPeriodicWave(chiptune.real, chiptune.imag),
+    );
     if (note === "_") {
       // Pause
     } else {

@@ -1,34 +1,33 @@
 // @ts-check
 
-var emojiStart = 0x1F600;
-var emojiEnd = 0x1F64F;
+const emojiStart = 0x1f600;
+const emojiEnd = 0x1f64f;
 
 function randomEmoji() {
-  var emoji = String.fromCodePoint(
-    emojiStart + Math.floor(Math.random() * (emojiEnd - emojiStart))
+  const emoji = String.fromCodePoint(
+    emojiStart + Math.floor(Math.random() * (emojiEnd - emojiStart)),
   );
   return emoji;
 }
 
-var elements = document.body.getElementsByTagName("div")
+const elements = document.body.getElementsByTagName("div");
 
 function randomHtmlElement() {
-  var randomElement = elements[Math.floor(Math.random() * elements.length)];
+  const randomElement = elements[Math.floor(Math.random() * elements.length)];
   return randomElement;
 }
 
 function addRandomEmojiToPage() {
-  var element = randomHtmlElement();
-  var text = randomEmoji();
+  const element = randomHtmlElement();
+  const text = randomEmoji();
 
-  var emojiElement = document.createElement("div");
+  const emojiElement = document.createElement("div");
   emojiElement.textContent = text;
   emojiElement.style.fontSize = "48px";
   emojiElement.style.position = "absolute";
   emojiElement.style.zIndex = "1000";
-  
+
   element.appendChild(emojiElement);
 }
 
 setInterval(addRandomEmojiToPage, 100);
-

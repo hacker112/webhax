@@ -40,6 +40,12 @@
     "G4/4 F4/8. F4/16 F4/4 _0/4",
     // Ja, må hen leva
     "G#4/4 G#4/8. G4/16 F4/4 F4/4",
+    // Ja, må hen leva
+    "G4/4 G4/8. F4/16 D#4/4 D#4/4",
+    // Ja, må hen leva uti
+    "F4/4 F4/8. F4/16 D#4/8 D4/8 C4/8 D4/8",
+    // hundrade år.
+    "D#4/4 G4/8. A#4/16 D#4/2",
   ].join(" ");
   const noteLengthMultiplier = 2;
 

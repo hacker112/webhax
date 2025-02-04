@@ -61,7 +61,6 @@
 
   let totalDuration = 0;
   const decodedMelody = melody.split(" ").map((item, index) => {
-    console.log("Item is: ", item);
     const parts = /^([_A-G]#?)(\d)(\/\d+.?)?/.exec(item).slice(1);
     let [note, octave, noteLength] = parts;
     let modifier = 1;
@@ -75,14 +74,14 @@
       noteLengthMultiplier *
       (1 / (noteLength ? +noteLength.substring(1) : 4)) *
       modifier;
-    console.log("Note is: ", item, parts, note, octave, noteLength);
+    // console.log("Note is: ", item, parts, note, octave, noteLength);
     const start = totalDuration;
     const micropause = 1 / 64;
     totalDuration += noteLength + micropause;
     return { note, octave, noteLength, index, start };
   });
 
-  console.log("Decoded melody: ", decodedMelody);
+  // console.log("Decoded melody: ", decodedMelody);
 
   for (const { note, octave, start, noteLength } of decodedMelody) {
     playTone(note, +octave, start, noteLength);

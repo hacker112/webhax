@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,7 +10,7 @@
       padding: 0;
     }
 
-    div.game {
+    div#erkanoid {
       position: fixed;
       top: 0;
       margin: 0;
@@ -19,10 +20,36 @@
       background-repeat: no-repeat;
       background-position: center;
       background-color: black;
-      border: 1px solid #ccc;
-      padding: 10px;
       height: 100%;
-      filter: blur(5px) sepia(50%);
+      filter: sepia(50%);
+      cursor: crosshair;
+    }
+
+    div.paddle {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 20px;
+      background-color: white;
+    }
+
+    div.ball {
+      position: fixed;
+      bottom: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    div.brick {
+      position: fixed;
+      width: 100px;
+      height: 20px;
+      background-color: white;
     }
   </style>
 </head>
@@ -30,8 +57,11 @@
 <body>
   <h1>Background</h1>
 
-  <div class="game">
+  <div id="erkanoid">
+    <div class="ball"></div>
+    <div class="paddle"></div>
   </div>
+  <script src="game.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,7 @@
+// @ts-check
+
 (() => {
-  const context = new (window.AudioContext || window.webkitAudioContext)();
+  const context = new window.AudioContext();
 
   const notes = {
     C: 16.35,
@@ -61,18 +63,18 @@
 
   let totalDuration = 0;
   const decodedMelody = melody.split(" ").map((item, index) => {
-    const parts = /^([_A-G]#?)(\d)(\/\d+.?)?/.exec(item).slice(1);
-    let [note, octave, noteLength] = parts;
+    const parts = (/^([_A-G]#?)(\d)(\/\d+.?)?/.exec(item) ?? []).slice(1);
+    let [note, octave, noteLengthPath] = parts;
     let modifier = 1;
-    if (noteLength.endsWith(".")) {
-      noteLength = noteLength.slice(0, -1);
+    if (noteLengthPath.endsWith(".")) {
+      noteLengthPath = noteLengthPath.slice(0, -1);
       modifier = 1.5;
     }
     // octave = +octave + 1;
 
-    noteLength =
+    const noteLength =
       noteLengthMultiplier *
-      (1 / (noteLength ? +noteLength.substring(1) : 4)) *
+      (1 / (noteLengthPath ? +noteLengthPath.substring(1) : 4)) *
       modifier;
     // console.log("Note is: ", item, parts, note, octave, noteLength);
     const start = totalDuration;

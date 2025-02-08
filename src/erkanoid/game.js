@@ -13,11 +13,11 @@ class Erkanoid {
       game.querySelector(".paddle")
     );
     this.ball = /**  @type {HTMLDivElement} */ (game.querySelector(".ball"));
-    this.ballSpeed = 2;
+    this.ballSpeed = 10;
     this.ballDirection = { x: 1, y: 1 };
     this.ballPosition = { x: 0, y: 0 };
     this.ballSize = 20;
-    this.paddleSize = 100;
+    this.paddleSize = 200;
     this.paddleSpeed = 10;
     this.paddlePosition = 0;
     this.bricks = [];
@@ -71,7 +71,7 @@ class Erkanoid {
       x: this.game.offsetWidth / 2 - this.ballSize / 2,
       y: this.game.offsetHeight / 2 - this.ballSize / 2,
     };
-    this.ballDirection = { x: 1, y: -1 };
+    this.ballDirection = { x: -1, y: 1 };
   }
 
   moveBall() {
@@ -91,16 +91,17 @@ class Erkanoid {
     }
 
     if (this.ballPosition.y <= 0) {
-      this.ballDirection.y *= -1;
+      this.ballDirection.y = 1;
     }
 
     if (
-      this.ballPosition.y >= this.game.offsetHeight - this.ballSize &&
+      this.ballPosition.y >= this.paddle.offsetTop - this.ballSize &&
       this.ballPosition.x >= this.paddlePosition &&
       this.ballPosition.x <=
         this.paddlePosition + this.paddle.offsetWidth - this.ballSize
     ) {
-      this.ballDirection.y *= -1;
+      this.ballDirection.y = -1;
+      console.log("B");
     }
 
     // biome-ignore lint/complexity/noForEach: <explanation>

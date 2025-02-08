@@ -2,6 +2,17 @@
 
 const game = document.getElementById("erkanoid");
 
+const context = new window.AudioContext();
+
+function playBoop(multiplier = 1) {
+  const osc = context.createOscillator();
+  osc.frequency.value = 110 * multiplier;
+  osc.type = "sawtooth";
+  osc.connect(context.destination);
+  osc.start(context.currentTime);
+  osc.stop(context.currentTime + 0.05);
+}
+
 class Erkanoid {
   /**
    *
@@ -20,9 +31,11 @@ class Erkanoid {
     this.paddleSize = 200;
     this.paddleSpeed = 10;
     this.paddlePosition = 0;
+
+    // Brinks
     this.bricks = [];
-    this.brickRows = 10;
-    this.brickColumns = 20;
+    this.brickRows = 5;
+    this.brickColumns = 10;
     this.brickGap = 10;
 
     const widthAvailable =
@@ -106,10 +119,12 @@ class Erkanoid {
       this.ballPosition.x >= this.game.offsetWidth - this.ballSize
     ) {
       this.ballDirection.x *= -1;
+      playBoop();
     }
 
     if (this.ballPosition.y <= 0) {
       this.ballDirection.y = 1;
+      playBoop();
     }
 
     if (
@@ -119,6 +134,7 @@ class Erkanoid {
         this.paddlePosition + this.paddle.offsetWidth - this.ballSize
     ) {
       this.ballDirection.y = -1;
+      playBoop();
     }
 
     // biome-ignore lint/complexity/noForEach: <explanation>
@@ -137,6 +153,7 @@ class Erkanoid {
           this.ballDirection.y *= -1;
           brick.style.display = "none";
           this.score++;
+          playBoop(2);
         }
       }
     });
@@ -146,6 +163,7 @@ class Erkanoid {
     if (this.score === this.brickRows * this.brickColumns) {
       this.gameOver = true;
       alert("You win!");
+      // play winning sound
     }
   }
 

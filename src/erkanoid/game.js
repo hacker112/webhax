@@ -21,11 +21,28 @@ class Erkanoid {
     this.paddleSpeed = 10;
     this.paddlePosition = 0;
     this.bricks = [];
-    this.brickSize = { x: 60, y: 20 };
-    this.brickRows = 5;
-    this.brickColumns = 10;
+    this.brickRows = 10;
+    this.brickColumns = 20;
     this.brickGap = 10;
-    this.brickColors = ["red", "green", "blue", "yellow", "purple"];
+
+    const widthAvailable =
+      this.game.clientWidth - (this.brickColumns + 1) * this.brickGap;
+    const widthPerBrick = Math.floor(widthAvailable / this.brickColumns);
+    const heightPerBrick = Math.floor(widthAvailable / this.brickColumns / 3);
+
+    this.brickSize = { x: widthPerBrick, y: heightPerBrick };
+    this.brickColors = [
+      "red",
+      "green",
+      "blue",
+      "yellow",
+      "purple",
+      "orange",
+      "pink",
+      "cyan",
+      "brown",
+      "magenta",
+    ];
     this.score = 0;
     this.lives = 3;
     this.gameOver = false;
@@ -50,9 +67,10 @@ class Erkanoid {
         brick.className = "brick";
         brick.style.width = `${this.brickSize.x}px`;
         brick.style.height = `${this.brickSize.y}px`;
-        brick.style.left = `${x * (this.brickSize.x + this.brickGap)}px`;
-        brick.style.top = `${y * (this.brickSize.y + this.brickGap)}px`;
-        brick.style.backgroundColor = this.brickColors[y];
+        brick.style.left = `${this.brickGap + x * (this.brickSize.x + this.brickGap)}px`;
+        brick.style.top = `${this.brickGap + y * (this.brickSize.y + this.brickGap)}px`;
+        brick.style.backgroundColor =
+          this.brickColors[y % this.brickColors.length];
         this.game.appendChild(brick);
         this.bricks.push(brick);
       }
@@ -101,7 +119,6 @@ class Erkanoid {
         this.paddlePosition + this.paddle.offsetWidth - this.ballSize
     ) {
       this.ballDirection.y = -1;
-      console.log("B");
     }
 
     // biome-ignore lint/complexity/noForEach: <explanation>

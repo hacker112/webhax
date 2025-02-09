@@ -26,6 +26,12 @@
     return { real, imag };
   })();
 
+  /**
+   * @param {string} note
+   * @param {number} octave
+   * @param {number} start
+   * @param {number} duration
+   */
   function playTone(note, octave, start, duration, oscilatorType = "sine") {
     const osc = context.createOscillator();
     osc.setPeriodicWave(
@@ -39,6 +45,7 @@
       osc.start(context.currentTime + start);
       osc.stop(context.currentTime + start + duration);
     }
+    return osc;
   }
 
   const melody = [
@@ -85,7 +92,17 @@
 
   // console.log("Decoded melody: ", decodedMelody);
 
-  for (const { note, octave, start, noteLength } of decodedMelody) {
-    playTone(note, +octave, start, noteLength);
+  function playMelody(callback) {
+    let osc = null;
+    for (const { note, octave, start, noteLength } of decodedMelody) {
+      osc = playTone(note, +octave, start, noteLength);
+    }
+    osc?.addEventListener("ended", () => {
+      if (callback) {
+        callback();
+      }
+    });
   }
+
+  playMelody();
 })();

@@ -34,9 +34,9 @@ class Erkanoid {
       game.querySelector(".paddle")
     );
     this.ball = /**  @type {HTMLDivElement} */ (game.querySelector(".ball"));
-    this.ballSpeed = 8;
     this.ballDirection = { x: 1, y: 1 };
     this.ballPosition = { x: 0, y: 0 };
+    this.ballSpeed = 8;
     this.ballSize = 20;
     this.paddleSize = 200;
     this.paddleSpeed = 10;
@@ -75,7 +75,7 @@ class Erkanoid {
     this.setupInterval();
     this.createBricks();
     this.render();
-    this.start();
+    this.startPositions();
   }
 
   setupEventListers() {
@@ -106,6 +106,11 @@ class Erkanoid {
   }
 
   createBricks() {
+    for (const brick of this.bricks) {
+      this.game.removeChild(brick);
+    }
+    this.bricks = [];
+
     for (let y = 0; y < this.brickRows; y++) {
       for (let x = 0; x < this.brickColumns; x++) {
         const brick = document.createElement("div");
@@ -133,7 +138,7 @@ class Erkanoid {
     this.ball.style.top = `${this.ballPosition.y}px`;
   }
 
-  start() {
+  startPositions() {
     this.ballPosition = {
       x: this.game.offsetWidth / 2 - this.ballSize / 2,
       y: this.game.offsetHeight / 2 - this.ballSize / 2,
@@ -191,6 +196,21 @@ class Erkanoid {
           brick.style.display = "none";
           this.score++;
           playBoop(2);
+          const brickColor = brick.style.backgroundColor;
+
+          switch (brickColor) {
+            case "red":
+              this.paddleSize *= 1.2;
+              break;
+            case "green":
+              this.paddleSize *= 0.9;
+              break;
+            case "blue":
+            case "yellow":
+            case "purple":
+              this.ballSpeed *= 1.01;
+              break;
+          }
         }
       }
     });
@@ -200,18 +220,20 @@ class Erkanoid {
     if (this.score === this.brickRows * this.brickColumns) {
       this.gameOver = true;
       alert("🎉 You won Erkanoid 🎉");
-      // play winning sound
+      this.createBricks();
+      this.startPositions();
     }
   }
 
   checkGameOver() {
     if (this.ballPosition.y >= this.game.offsetHeight - this.ballSize) {
       this.lives--;
+      this.startPositions();
       if (this.lives <= 0) {
         this.gameOver = true;
         alert("You lost Erkanoid 🤭 Try again! ");
+        this.createBricks();
       } else {
-        this.start();
         this.gamePaused = true;
       }
     }
@@ -222,7 +244,10 @@ class Erkanoid {
     this.gamePaused = false;
     this.score = 0;
     this.lives = 3;
-    this.start();
+    this.ballSpeed = 8;
+    this.ballSize = 20;
+    this.paddleSize = 200;
+    this.startPositions();
   }
 }
 

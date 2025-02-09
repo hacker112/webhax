@@ -166,7 +166,11 @@ class Erkanoid {
       this.ballPosition.x <=
         this.paddlePosition + this.paddle.offsetWidth - this.ballSize
     ) {
-      this.ballDirection.y = -1;
+      this.ballDirection.y = Math.abs(this.ballDirection.y) * -1.05;
+      const paddleCenter = this.paddlePosition + this.paddle.offsetWidth / 2;
+      const ballCenter = this.ballPosition.x + this.ballSize / 2;
+      const diff = (ballCenter - paddleCenter) / (this.paddle.offsetWidth / 2);
+      this.ballDirection.x = diff;
       playBoop();
     }
 
@@ -195,7 +199,7 @@ class Erkanoid {
   checkWin() {
     if (this.score === this.brickRows * this.brickColumns) {
       this.gameOver = true;
-      alert("You win!");
+      alert("🎉 You won Erkanoid 🎉");
       // play winning sound
     }
   }
@@ -205,7 +209,7 @@ class Erkanoid {
       this.lives--;
       if (this.lives <= 0) {
         this.gameOver = true;
-        alert("Game over!");
+        alert("You lost Erkanoid 🤭 Try again! ");
       } else {
         this.start();
         this.gamePaused = true;

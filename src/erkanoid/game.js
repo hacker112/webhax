@@ -13,6 +13,16 @@ function playBoop(multiplier = 1) {
   osc.stop(context.currentTime + 0.05);
 }
 
+const emojiStart = 0x1f600;
+const emojiEnd = 0x1f64f;
+
+function randomEmoji() {
+  const emoji = String.fromCodePoint(
+    emojiStart + Math.floor(Math.random() * (emojiEnd - emojiStart)),
+  );
+  return emoji;
+}
+
 class Erkanoid {
   /**
    *
@@ -24,7 +34,7 @@ class Erkanoid {
       game.querySelector(".paddle")
     );
     this.ball = /**  @type {HTMLDivElement} */ (game.querySelector(".ball"));
-    this.ballSpeed = 10;
+    this.ballSpeed = 8;
     this.ballDirection = { x: 1, y: 1 };
     this.ballPosition = { x: 0, y: 0 };
     this.ballSize = 20;
@@ -58,9 +68,11 @@ class Erkanoid {
     ];
     this.score = 0;
     this.lives = 3;
-    this.gameOver = false;
+    this.gameOver = true;
+    this.gamePaused = true;
 
     this.setupEventListers();
+    this.setupInterval();
     this.createBricks();
     this.render();
     this.start();
@@ -71,15 +83,37 @@ class Erkanoid {
       this.paddlePosition =
         event.clientX - this.game.offsetLeft - this.paddle.offsetWidth / 2;
     });
+    this.game.addEventListener("mousedown", () => {
+      if (this.gameOver) {
+        this.startGame();
+      } else {
+        this.gamePaused = false;
+      }
+    });
+  }
+
+  setupInterval() {
+    const cancelId = setInterval(() => {
+      this.render();
+      if (this.gamePaused || this.gameOver) {
+        return;
+      }
+      this.moveBall();
+      this.checkCollisions();
+      this.checkWin();
+      this.checkGameOver();
+    }, 1000 / 60);
   }
 
   createBricks() {
     for (let y = 0; y < this.brickRows; y++) {
       for (let x = 0; x < this.brickColumns; x++) {
         const brick = document.createElement("div");
+        brick.innerText = randomEmoji();
         brick.className = "brick";
         brick.style.width = `${this.brickSize.x}px`;
         brick.style.height = `${this.brickSize.y}px`;
+        brick.style["font-size"] = `${this.brickSize.y - 10}px`;
         brick.style.left = `${this.brickGap + x * (this.brickSize.x + this.brickGap)}px`;
         brick.style.top = `${this.brickGap + y * (this.brickSize.y + this.brickGap)}px`;
         brick.style.backgroundColor =
@@ -95,6 +129,8 @@ class Erkanoid {
     this.paddle.style.left = `${this.paddlePosition}px`;
     this.ball.style.width = `${this.ballSize}px`;
     this.ball.style.height = `${this.ballSize}px`;
+    this.ball.style.left = `${this.ballPosition.x}px`;
+    this.ball.style.top = `${this.ballPosition.y}px`;
   }
 
   start() {
@@ -108,9 +144,6 @@ class Erkanoid {
   moveBall() {
     this.ballPosition.x += this.ballSpeed * this.ballDirection.x;
     this.ballPosition.y += this.ballSpeed * this.ballDirection.y;
-
-    this.ball.style.left = `${this.ballPosition.x}px`;
-    this.ball.style.top = `${this.ballPosition.y}px`;
   }
 
   checkCollisions() {
@@ -175,29 +208,18 @@ class Erkanoid {
         alert("Game over!");
       } else {
         this.start();
+        this.gamePaused = true;
       }
     }
   }
 
   startGame() {
     this.gameOver = false;
+    this.gamePaused = false;
     this.score = 0;
     this.lives = 3;
     this.start();
-
-    const cancelId = setInterval(() => {
-      this.render();
-      this.moveBall();
-      this.checkCollisions();
-      this.checkWin();
-      this.checkGameOver();
-      if (this.gameOver) {
-        clearInterval(cancelId);
-      }
-    }, 1000 / 60);
   }
 }
 
 const erkanoid = new Erkanoid(/** @type {HTMLDivElement} */ (game));
-
-erkanoid.startGame();

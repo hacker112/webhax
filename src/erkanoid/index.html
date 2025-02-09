@@ -23,32 +23,36 @@
       height: 100%;
       filter: sepia(50%);
       cursor: crosshair;
-    }
 
-    div.paddle {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      width: 100px;
-      height: 20px;
-      background-color: white;
-    }
+      .paddle {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        width: 100px;
+        height: 20px;
+        background-color: white;
+      }
 
-    div.ball {
-      position: fixed;
-      bottom: 30%;
-      left: 50%;
-      width: 20px;
-      height: 20px;
-      background-color: red;
-      border-radius: 50%;
-    }
+      .ball {
+        position: fixed;
+        bottom: 30%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 16px;
+      }
 
-    div.brick {
-      position: fixed;
-      width: 100px;
-      height: 20px;
-      background-color: white;
+      .brick {
+        position: fixed;
+        width: 100px;
+        height: 20px;
+        background-color: white;
+        text-align: center;
+      }
+
     }
   </style>
 </head>
@@ -57,7 +61,7 @@
   <h1>Background</h1>
 
   <div id="erkanoid">
-    <div class="ball"></div>
+    <div class="ball">😳</div>
     <div class="paddle"></div>
   </div>
   <script src="game.js"></script>

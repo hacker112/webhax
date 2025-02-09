@@ -10,6 +10,41 @@
       padding: 0;
     }
 
+
+    @keyframes spin {
+      from {
+        transform: rotateY(0deg);
+        opacity: 100%;
+      }
+
+      to {
+        transform: rotateY(-360deg);
+        opacity: 0%;
+      }
+    }
+
+    @keyframes depth {
+      0% {
+        text-shadow: 0 0 black;
+      }
+
+      25% {
+        text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+      }
+
+      50% {
+        text-shadow: 0 0 black;
+      }
+
+      75% {
+        text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black, -5px 0 black;
+      }
+
+      100% {
+        text-shadow: 0 0 black;
+      }
+    }
+
     div#erkanoid {
       position: fixed;
       top: 0;
@@ -52,6 +87,15 @@
         height: 20px;
         background-color: white;
         text-align: center;
+      }
+
+      .brick.hide {
+        animation-name: spin, depth;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
       }
 
     }

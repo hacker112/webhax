@@ -181,7 +181,7 @@ class Erkanoid {
 
     // biome-ignore lint/complexity/noForEach: <explanation>
     this.bricks.forEach((brick) => {
-      if (brick.style.display !== "none") {
+      if (!brick.className.includes("hide")) {
         if (
           this.ballPosition.y <=
             Number.parseInt(brick.style.top) + this.brickSize.y &&
@@ -193,7 +193,7 @@ class Erkanoid {
             Number.parseInt(brick.style.left) + this.brickSize.x
         ) {
           this.ballDirection.y *= -1;
-          brick.style.display = "none";
+          brick.className = "brick hide";
           this.score++;
           playBoop(2);
           const brickColor = brick.style.backgroundColor;
